@@ -144,7 +144,7 @@ const menuData = [
     image: "/images/gulab-jamun.jpg",
     price: 60,
     offer: 0,
-    category: "Desserts & Beverages",
+    category: "Desserts",
   },
   {
     id: 17,
@@ -152,7 +152,7 @@ const menuData = [
     image: "/images/lassi.jpg",
     price: 50,
     offer: 0,
-    category: "Desserts & Beverages",
+    category: "Beverages",
   },
   {
     id: 18,
@@ -160,7 +160,7 @@ const menuData = [
     image: "/images/cold-coffee.jpg",
     price: 70,
     offer: 5,
-    category: "Desserts & Beverages",
+    category: "Beverages",
   },
 ];
 

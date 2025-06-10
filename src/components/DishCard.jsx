@@ -3,13 +3,14 @@ import { useCart } from "../context/CartContext";
 import { FaRupeeSign } from "react-icons/fa";
 
 const DishCard = ({ dish }) => {
-  const {  name, image, price, offer, category } = dish;
+  const { id, name, image, price, offer, category } = dish;
   const { addToCart } = useCart();
 
   const discountedPrice = offer ? price - price * (offer / 100) : price;
 
   return (
-    <div className="bg-white rounded-2xl shadow hover:shadow-lg transition p-3 flex flex-col justify-between">
+    <div className="bg-white rounded-2xl shadow hover:shadow-lg transition p-3 flex flex-col justify-between"
+     data-testid={`dish-${id}`}>
       {/* Image */}
       <div className="relative h-40 overflow-hidden rounded-xl mb-3">
         <img
