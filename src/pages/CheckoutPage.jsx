@@ -44,7 +44,7 @@ const CheckoutPage = () => {
 💰 *Total:* ₹${totalPrice.toFixed(2)}
     `.trim();
 
-    const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    const whatsappURL = `https://wa.me/919452777207?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappURL, "_blank");
     clearCart();
