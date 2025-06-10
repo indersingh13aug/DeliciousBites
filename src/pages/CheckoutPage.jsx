@@ -12,41 +12,35 @@ const CheckoutPage = () => {
     clearCart,
   } = useCart();
 
-  const [customer, setCustomer] = useState({
-    name: "",
-    phone: "",
-    address: "",
-  });
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
 
   const handlePlaceOrder = () => {
-    const { name, phone, address } = customer;
-
-    if (!name || !phone || !address) {
-      alert("Please fill in all customer details.");
-      return;
-    }
-
     const orderDetails = cartItems
       .map((item) => {
         const discountedPrice = item.offer
           ? item.price - item.price * (item.offer / 100)
           : item.price;
-        return `• ${item.name} (x${item.quantity}) - ₹${(discountedPrice * item.quantity).toFixed(2)}`;
+        return `• ${item.name} (x${item.quantity}) - ₹${(
+          discountedPrice * item.quantity
+        ).toFixed(2)}`;
       })
-      .join("%0A");
+      .join("\n");
 
-    const message = `
-🛒 *New Order Received*%0A
-👤 *Name:* ${name}%0A
-📞 *Phone:* ${phone}%0A
-🏠 *Address:* ${address}%0A
-%0A🍽 *Order Details:*%0A${orderDetails}%0A
-💰 *Total:* ₹${totalPrice.toFixed(2)}
-    `.trim();
+    const message = `🛒 New Order Received
+👤 Name: ${name}
+📞 Phone: ${phone}
+🏠 Address: ${address}
 
-    const whatsappURL = `https://wa.me/919452777207?text=${encodeURIComponent(message)}`;
+🍽 Order Details:
+${orderDetails}
+💰 Total: ₹${totalPrice.toFixed(2)}`;
 
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/919452777207?text=${encodedMessage}`;
     window.open(whatsappURL, "_blank");
+
     clearCart();
   };
 
@@ -58,7 +52,6 @@ const CheckoutPage = () => {
         <p className="text-gray-600">Your cart is empty. Go to the menu to add items.</p>
       ) : (
         <>
-          {/* Cart Summary */}
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-6">
               {cartItems.map((item) => {
@@ -80,7 +73,8 @@ const CheckoutPage = () => {
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg">{item.name}</h3>
                       <p className="text-sm text-gray-500">
-                        ₹{discountedPrice.toFixed(2)} × {item.quantity} = ₹{itemTotal.toFixed(2)}
+                        ₹{discountedPrice.toFixed(2)} × {item.quantity} = ₹
+                        {itemTotal.toFixed(2)}
                       </p>
                       <QuantitySelector
                         quantity={item.quantity}
@@ -98,13 +92,11 @@ const CheckoutPage = () => {
                 );
               })}
 
-              {/* Total */}
               <div className="text-right font-semibold text-lg">
                 Total: ₹{totalPrice.toFixed(2)}
               </div>
             </div>
 
-            {/* Checkout Form */}
             <div className="bg-gray-50 p-4 rounded-lg shadow-md space-y-4">
               <h2 className="text-xl font-bold text-gray-700 mb-2">Customer Info</h2>
 
@@ -119,13 +111,11 @@ const CheckoutPage = () => {
                   <label className="block text-sm text-gray-600 mb-1">Name</label>
                   <input
                     type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter your name"
-                    value={customer.name}
-                    onChange={(e) =>
-                      setCustomer({ ...customer, name: e.target.value })
-                    }
                   />
                 </div>
 
@@ -133,27 +123,23 @@ const CheckoutPage = () => {
                   <label className="block text-sm text-gray-600 mb-1">Phone</label>
                   <input
                     type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     required
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter your phone number"
-                    value={customer.phone}
-                    onChange={(e) =>
-                      setCustomer({ ...customer, phone: e.target.value })
-                    }
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">Address</label>
                   <textarea
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                     required
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter delivery address"
                     rows={3}
-                    value={customer.address}
-                    onChange={(e) =>
-                      setCustomer({ ...customer, address: e.target.value })
-                    }
                   />
                 </div>
 
@@ -161,7 +147,7 @@ const CheckoutPage = () => {
                   type="submit"
                   className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
                 >
-                  Place Order via WhatsApp
+                  Place Order
                 </button>
               </form>
             </div>
