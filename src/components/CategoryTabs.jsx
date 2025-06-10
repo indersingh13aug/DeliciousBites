@@ -36,5 +36,4 @@ const CategoryTabs = ({ selectedCategory, onCategoryChange }) => {
     </div>
   );
 };
-
 export default CategoryTabs;
