@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import QuantitySelector from "../components/QuantitySelector";
 import { FaTrash } from "react-icons/fa";
@@ -12,8 +12,41 @@ const CheckoutPage = () => {
     clearCart,
   } = useCart();
 
+  const [customer, setCustomer] = useState({
+    name: "",
+    phone: "",
+    address: "",
+  });
+
   const handlePlaceOrder = () => {
-    alert("Order placed successfully!");
+    const { name, phone, address } = customer;
+
+    if (!name || !phone || !address) {
+      alert("Please fill in all customer details.");
+      return;
+    }
+
+    const orderDetails = cartItems
+      .map((item) => {
+        const discountedPrice = item.offer
+          ? item.price - item.price * (item.offer / 100)
+          : item.price;
+        return `• ${item.name} (x${item.quantity}) - ₹${(discountedPrice * item.quantity).toFixed(2)}`;
+      })
+      .join("%0A");
+
+    const message = `
+🛒 *New Order Received*%0A
+👤 *Name:* ${name}%0A
+📞 *Phone:* ${phone}%0A
+🏠 *Address:* ${address}%0A
+%0A🍽 *Order Details:*%0A${orderDetails}%0A
+💰 *Total:* ₹${totalPrice.toFixed(2)}
+    `.trim();
+
+    const whatsappURL = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappURL, "_blank");
     clearCart();
   };
 
@@ -47,8 +80,7 @@ const CheckoutPage = () => {
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg">{item.name}</h3>
                       <p className="text-sm text-gray-500">
-                        ₹{discountedPrice.toFixed(2)} × {item.quantity} ={" "}
-                        ₹{itemTotal.toFixed(2)}
+                        ₹{discountedPrice.toFixed(2)} × {item.quantity} = ₹{itemTotal.toFixed(2)}
                       </p>
                       <QuantitySelector
                         quantity={item.quantity}
@@ -90,6 +122,10 @@ const CheckoutPage = () => {
                     required
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter your name"
+                    value={customer.name}
+                    onChange={(e) =>
+                      setCustomer({ ...customer, name: e.target.value })
+                    }
                   />
                 </div>
 
@@ -100,6 +136,10 @@ const CheckoutPage = () => {
                     required
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter your phone number"
+                    value={customer.phone}
+                    onChange={(e) =>
+                      setCustomer({ ...customer, phone: e.target.value })
+                    }
                   />
                 </div>
 
@@ -110,6 +150,10 @@ const CheckoutPage = () => {
                     className="w-full border rounded px-3 py-2"
                     placeholder="Enter delivery address"
                     rows={3}
+                    value={customer.address}
+                    onChange={(e) =>
+                      setCustomer({ ...customer, address: e.target.value })
+                    }
                   />
                 </div>
 
@@ -117,7 +161,7 @@ const CheckoutPage = () => {
                   type="submit"
                   className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
                 >
-                  Place Order
+                  Place Order via WhatsApp
                 </button>
               </form>
             </div>

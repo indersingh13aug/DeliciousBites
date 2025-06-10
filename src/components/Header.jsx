@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 
-const Header = ({ onCartOpen }) => {
+const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { cartItems } = useCart();
 
@@ -47,8 +47,8 @@ const Header = ({ onCartOpen }) => {
 
         {/* Cart Icon */}
         <div className="flex items-center gap-4">
-          <button
-            onClick={onCartOpen}
+          <Link
+            to="/checkout"
             className="relative text-gray-700 hover:text-green-700"
           >
             <FaShoppingCart size={22} />
@@ -57,7 +57,7 @@ const Header = ({ onCartOpen }) => {
                 {totalItems}
               </span>
             )}
-          </button>
+          </Link>
 
           {/* Hamburger (Mobile) */}
           <button onClick={toggleMenu} className="md:hidden">
