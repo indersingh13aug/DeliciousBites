@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 import { FaRupeeSign } from "react-icons/fa";
 
 const DishCard = ({ dish }) => {
-  const { id, name, image, price, offer, category } = dish;
+  const {  name, image, price, offer, category } = dish;
   const { addToCart } = useCart();
 
   const discountedPrice = offer ? price - price * (offer / 100) : price;
